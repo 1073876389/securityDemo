@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuwenxing.securityDemo.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.xuwenxing.securityDemo.domain.system.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="phoneNumber" property="phoneNumber"/>
+        <result column="headPortrait" property="headPortrait"/>
+        <result column="userType" property="userType"/>
+        <result column="userCode" property="userCode"/>
+        <result column="isActive" property="isActive"/>
+        <result column="email" property="email"/>
+        <result column="createDate" property="createDate"/>
+        <result column="deleteDate" property="deleteDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="createBy" property="createBy"/>
+        <result column="deleteBy" property="deleteBy"/>
+        <result column="updateBy" property="updateBy"/>
+    </resultMap>
+
+    <sql id="base_where">
+        <where>
+            <if test="username!=null">
+                and  username like concant('%',#{username}'%')
+            </if>
+            <if test="endDate!=null">
+                and  createDate &lt; #{endDate}
+            </if>
+            <if test="startDate!=null">
+                and  createDate &gt; #{startDate}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="save">
+      insert into	`user` ( id,username, password, headPortrait, phoneNumber, userType, userCode, isActive, email, createDate, deleteDate, updateDate, createBy, deleteBy, updateBy )
+      values (#{id},#{username}, #{password}, #{headPortrait}, #{phoneNumber}, #{userType}, #{userCode},#{isActive}, #{email}, #{createDate}, #{deleteDate}, #{updateDate}, #{createBy}, #{deleteBy}, #{updateBy})
+    </insert>
+    <update id="update">
+        update `user`
+    set username = #{username},
+      password = #{password},
+      headPortrait = #{headPortrait},
+      phoneNumber = #{phoneNumber},
+      userType = #{userType},
+      userCode = #{userCode},
+      isActive = #{isActive},
+      email = #{email},
+      createDate = #{createDate},
+      deleteDate = #{deleteDate},
+      updateDate = #{updateDate},
+      createBy = #{createBy},
+      deleteBy = #{deleteBy},
+      updateBy = #{updateBy},
+    where id = #{id}
+    </update>
+    <delete id="delete">
+        delete from	`user` where id = #{id}
+    </delete>
+    <select id="get" resultMap="BaseResultMap">
+      select  id, username, password, headPortrait, phoneNumber, userType, userCode, isActive, email, createDate, deleteDate, updateDate, createBy, deleteBy, updateBy
+      from 	`user` where id =#{id}
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select id,username, password, headPortrait, phoneNumber, userType, userCode, isActive, email, createDate, deleteDate, updateDate, createBy, deleteBy, updateBy
+        from 	`user`
+    </select>
+
+    <select id="queryForList" resultMap="BaseResultMap">
+        select id,username, password, headPortrait, phoneNumber, userType, userCode, isActive, email, createDate, deleteDate, updateDate, createBy, deleteBy, updateBy
+        from 	`user`
+        <include refid="base_where"/>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="queryForCount" resultType="int">
+        SELECT count(id) FROM 	`user`
+        <include refid="base_where"/>
+    </select>
+
+    <select id="userLogin" resultMap="BaseResultMap">
+        select id,username, password, headPortrait, phoneNumber, userType, userCode, isActive, email, createDate, deleteDate, updateDate, createBy, deleteBy, updateBy
+        from 	`user`
+        where username=#{username} and password=#{password}
+    </select>
+
+</mapper>

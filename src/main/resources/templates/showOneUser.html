@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>演示thymeleaf技术-showOneUser信息展示</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link th:href="@{/bootstrap/css/bootstrap.css}" href="../static/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link th:href="@{/bootstrap/css/bootstrap-theme.css}" href="../static/bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <script th:src="@{/bootstrap/js/bootstrap.js}" src="../static/bootstrap/js/bootstrap.js"></script>
+    <script th:src="@{/bootstrap/js/jquery-3.3.1.min.js}" src="../static/bootstrap/js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="panel-primary">
+                <div class="panel-heading text-center">
+                    <span class="panel-title">学生信息</span>
+                </div>
+                <div class="panel-body">
+                    编号:<span th:text="${user.id}"></span><br>
+                    姓名:<span th:text="${user.username}"></span><br>
+                    密码:<span th:text="${user.password}"></span><br>
+                    邮箱:<span th:text="${user.email}"></span><br>
+                    电话:<span th:text="${user.phoneNumber}"></span><br>
+                    创建时间：<span th:text="${#dates.format(user.createDate, 'yyyy-MM-dd hh:mm:ss')}"></span><br/>
+                    用户类型：<span th:text="${user.userType==0?'管理员':'普通用户'}"></span><br/>
+                </div>
+                <div class="panel-footer text-left">
+                    <span class="panel-title">天堂会所二号技师@666</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="panel-primary">
+                <div class="panel-heading text-center">
+                    <span class="panel-title">学生信息</span>
+                </div>
+                <div class="panel-body">
+                    编号:<span th:text="*{user.id}">2</span><br>
+                    姓名:<span th:text="*{user.username}">溜溜哒</span><br>
+                    密码:<span th:text="*{user.password}">男</span><br>
+                    邮箱:<span th:text="*{user.email}">20@qq.com</span><br>
+                    电话:<span th:text="*{user.phoneNumber}">119</span><br>
+                    创建时间：<span th:text="*{#dates.format(user.createDate, 'yyyy-MM-dd hh:mm:ss')}"></span><br/>
+                    用户类型：<span th:text="*{user.userType==0?'管理员':'普通用户'}"></span><br/>
+                </div>
+                <div class="panel-footer text-left">
+                    <span class="panel-title">天堂会所二号技师@666</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h2>说明：此页面采用变量表达式${...}、选择变量表达式*{...}。
+            为了格式化注册时间，采用#dates对象的format方法。
+            为了将权限的数字0和1转换成“管理员”和“普通用户”，采用了三元运算符 (逻辑表达式)?(表达式1):(表达式2)</h2>
+    </div>
+</div>
+</body>
+</html>
