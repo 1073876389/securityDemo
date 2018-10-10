@@ -38,9 +38,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        super.configure(http);
                 http
                 .authorizeRequests().
-                        antMatchers("/resources/**").permitAll()
-                        .antMatchers("/admin/**").hasRole("ADMIN")
-                        .antMatchers("/db/**").access("hasRole('ADMIN') and  hasRole('DBA')")
+                        antMatchers("/bootstrap/**").permitAll()//这里配置的路径与静态资源访问有关
+//                        .antMatchers("/admin/**").hasRole("ADMIN")
+//                        .antMatchers("/db/**").access("hasRole('ADMIN') and  hasRole('DBA')")
                 .anyRequest()
                 .authenticated()
                 .and()

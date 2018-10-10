@@ -4,6 +4,7 @@ import com.xuwenxing.securityDemo.domain.system.User;
 import com.xuwenxing.securityDemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -29,6 +30,21 @@ public class UserController
     @RequestMapping("/login")
     public String login(){
         return "login";
+    }
+
+    @RequestMapping("/userLogin")
+    public String userLogin(Model model,String username, String password){
+        User user = userService.userLogin(username, password);
+        if (user!=null){
+            model.addAttribute("msj","登陆成功!");
+            model.addAttribute("success",true);
+            model.addAttribute("user",user);
+            return "redirect:/allUser";
+        }else {
+            model.addAttribute("success",false);
+            model.addAttribute("msj","登陆失败!");
+            return "/login";
+        }
     }
 
 

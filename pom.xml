@@ -127,6 +127,7 @@
 			<scope>compile</scope>
 		</dependency>
 		<!--集成spring security-->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
