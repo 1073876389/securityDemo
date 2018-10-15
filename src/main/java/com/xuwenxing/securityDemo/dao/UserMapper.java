@@ -25,4 +25,6 @@ public interface UserMapper {
     List<User> findList();
 
     User userLogin(@Param("username") String username, @Param("password") String password);
+
+    User checkUsername(String username);
 }

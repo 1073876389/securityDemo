@@ -5,15 +5,20 @@ import com.xuwenxing.securityDemo.dao.UserMapper;
 import com.xuwenxing.securityDemo.domain.system.User;
 import com.xuwenxing.securityDemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by xuwx on 2018/7/31.
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserMapper userMapper;
@@ -46,8 +51,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean checkUsername(String username) {
-        return false;
+    public User checkUsername(String username) {
+        User user = userMapper.checkUsername(username);
+        if (user!=null){
+        return user;
+        }else{
+        return null;
+        }
     }
 
     @Override
@@ -55,4 +65,5 @@ public class UserServiceImpl implements UserService {
         User user =userMapper.userLogin(username,password);
         return user ;
     }
+
 }

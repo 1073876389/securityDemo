@@ -20,7 +20,7 @@ public interface UserService {
 
     List<User> findList();
 
-    boolean checkUsername(String username);
+    User checkUsername(String username);
 
     User userLogin(String username, String password);
 }
