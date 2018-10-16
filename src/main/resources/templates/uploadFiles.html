@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta  http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Springboot以及security文件上传演示</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link th:href="@{/bootstrap/css/bootstrap.css}" href="../static/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link th:href="@{/bootstrap/css/bootstrap-theme.css}" href="../static/bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <script th:src="@{/bootstrap/js/jquery-3.3.1.min.js}" src="../static/bootstrap/js/jquery-3.3.1.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.js}" src="../static/bootstrap/js/bootstrap.js"></script>
+    <script th:src="@{/bootstrap/js/plugins/jquery-validation/jquery.validate.js}" src="../static/bootstrap/js/plugins/jquery-validation/jquery.validate.js"></script>
+    <script th:src="@{/bootstrap/js/plugins/jquery-validation/localization/messages_zh.js}" src="../static/bootstrap/js/plugins/jquery-validation/localization/messages_zh.js"></script>
+    <script th:src="@{/bootstrap/js/jquery-bootstrap.js}" src="../static/bootstrap/js/jquery-bootstrap.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+        })
+    </script>
+</head>
+<body>
+        <div class="col-md-12">
+            <div class="form-control">
+                <h1>
+                  Springboot以及security文件上传演示
+                </h1>
+                <form enctype="multipart/form-data" method="post" action="/myUpload">
+                    <div class="form-group" >
+                        <label for="exampleInputFile">File input</label>
+                        <input type="file" name="myUploadFile" id="exampleInputFile">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <p class="help-block">Example block-level help text here.</p>
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+</body>
+</html>
