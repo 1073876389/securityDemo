@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vueDemo实例属性和方法</title>
+    <!--引入饿了么的样式-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--<script src="/static/bootstrap/js/plugins/vue/vue.js"></script>-->
+    <script >
+        //自定义指令也是可以操作DOM的 指令前必须加前缀 v-
+        Vue.directive('hello',{
+           //可以有参数el binding,binding中包括一些属性 name ,value
+           //binding.vlaue =>绑定变量
+           //binding.expression => 表达式 v-my-directive="1+1"
+           //binding.arg =>传参 v-on:click
+           //binding.modifiers => v-on:click.prevent
+            bind(el,binding){
+                console.log(el, binding.arg) //打印出指令使用时传递的参数
+                el.style.color = 'red';
+                alert("指令第一次绑定到元素上时调用,只调用一次,可执行初始化操作dom")
+            },
+            inserted(){
+                alert("被绑定元素插入到dom中时调用");
+            },
+            update(){
+                alert("被绑定元素所在模板更新时候调用");
+            },
+            componentUpdated(){
+                alert("被绑定元素所在模板完成一次更新周期时候调用");
+            },
+            unbind(){
+                alert("指令与元素解绑时调用,只调用一次");
+            }
+        });
+
+        var vm = null;
+        //类似jquery中的$.function
+        window.onload=function () {
+            //创建vue实例
+            vm = new Vue({
+                el:"#my",//2.0版本不允许挂载到html,body元素上  动态挂载
+                data:{
+                    id:101,
+                    name:'xuwx',
+                    age:18,
+                    user:{
+                        id:100,
+                        name:'lucy'
+                    },
+                    userArr:[{id:101,name:'jack'},{id:102,name:'mary'}]
+                },
+                //自定义的属性
+                name:'jackMa',
+                show:function(){
+                    alert("我在show")
+                },
+                methods:{
+                    add(){
+                        //在vm对象内可以使用this
+                        this.$refs.inputButton.style.color="yellow";
+                        this.$refs.inputText.value="我是点击后变换的值";
+                    },
+                    next(){
+                        //$nextTick  处理 加载延迟导致报错的方法.
+                        this.$nextTick(function () {
+                            console.log(this.$refs.hello.textContent);
+                            return this.$refs.hello.textContent;
+                        })
+                    },
+                    append(){
+                      this.$set(this.user, 'sex','男');
+                    },
+                    del(){
+                      this.$delete(this.user, 'sex');
+                    },
+                    update(){
+                        this.user.sex='女';
+                    }
+                },
+                directives:{ //自定义局部指令
+                    focus:{
+                        inserted(el){  //当被绑定元素插入到DOM中
+                            el.focus();
+                        }
+                    }
+
+                }
+            });
+
+            //1.获取vue实例的  data中的属性 //等效{{name}}
+           console.log(vm.name);
+            //2.获取vue实例关联的元素
+          //  console.log(vm.$el);
+           vm.$el.style.color='blue';
+            //3.vm.$data 获取data中的属性
+           console.log(vm.$data.name);
+            //4.获取自定义属性  vm.$options
+           console.log(vm.$options.name);
+           // vm.$options.show();//调用自定义方法
+           //5.vm.$refs 必须命名ref的属性  获取其元素  操作了我们的dom节点 有点类似回到jquery
+           vm.$refs.hello.style.color='red';
+           //6.手动挂载VUE实例
+         //   vm.$mount("#my");
+            // new Vue({}).$mount("#my");
+
+        }
+    </script>
+</head>
+<body>
+    <div id="my">
+        <h1>vue实例以及常用方法</h1>
+        <div>
+            <span  v-bind:id="101">{{name}}</span>
+            <h2 ref="hello">{{name}}</h2>
+        </div>
+        <div>
+            <span>{{name}}</span>
+            <input type="text" ref="inputText" value="我是默认值!">
+            <button ref="inputButton" @click="add">点击变颜色</button>
+        </div>
+        <div>
+          //  <span>{{next()}}</span>
+        </div>
+
+        <h1>$set 以及$delete方法</h1>
+        <div>
+            <span>{{user.name}}</span>
+            <span>{{user.sex}}</span>
+            <button @click="append">add</button> <button @click="del">del</button> <button @click="update">update</button>
+        </div>
+
+        <h1>指令 生命周期(钩子函数)</h1>
+        <div>
+            <h3 v-hello>{{name}}</h3>
+            <h3 v-hello:what>{{name}}</h3> <!--指令后接:号 标示参数 -->
+        </div>
+
+        <h1>组件  封装代码增加可复用性</h1>
+
+    </div>
+</body>
+</html>

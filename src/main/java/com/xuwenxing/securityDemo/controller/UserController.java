@@ -110,6 +110,13 @@ public class UserController
     }
 
 
+    @RequestMapping("/showError")
+    public String showError()
+    {
+        int i = 1/0;
+        return "uploadFiles";
+    }
+
 
 
 }

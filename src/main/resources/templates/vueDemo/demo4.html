@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 动态绑定css样式</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        span{
+            background: crimson;
+            display: inline-block;
+            padding: 10px;
+            color: darkgreen;
+            margin: 10px 0;
+        }
+        .changeColor span{
+            background: darkgreen;
+        }
+        .changeLength span:after{
+            content: "length";
+            margin-left: 10px;
+        }
+    </style>
+    <script>
+          var  vm = null;
+          window.onload=function () {
+              vm = new Vue({
+                 el:'#my',
+                 data:{
+                    changeColor:false,
+                    changeLength:false
+                 },
+                 method:{
+
+                 },
+                  //计算属性  用到及返回
+                 computed:{
+                     compClass(){
+                         return{
+                             changeColor:this.changeColor,
+                             changeLength:this.changeLength
+                         }
+                     }
+                 }
+              });
+          }
+    </script>
+</head>
+<body>
+<div id="my">
+    <div>
+        <!--在vue中 添加css 可以直接用class = "" 来完成-->
+        <h2>动态 CSS  Class</h2>
+
+        <h4>实例 1</h4>
+           <div @click="changeColor=!changeColor"  :class="{changeColor:changeColor}">
+                <span>XUWX</span>
+           </div>
+
+        <h4>实例 2</h4>
+            <div>
+               <button @click="changeColor=!changeColor">change color</button>
+                <div :class="compClass">
+                    <span>xuwx</span>
+                </div>
+                <button @click="changeLength=!changeLength">change color</button>
+                <div :class="compClass">
+                    <span>xuwx</span>
+                </div>
+            </div>
+    </div>
+</div>
+
+</body>
+</html>

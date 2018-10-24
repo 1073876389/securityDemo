@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示vue基础</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        /* 消除闪烁需要同时加上样式*/
+        [v-cloak]{
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div id="app">
+            <h1>v-for 用于对数组核对下进行循环</h1>
+            <!--标准的模板语法 -->
+            <!--文办插入-->
+            <!--多种数据类型-->
+            {{message}}<br>
+            {{name}}<br>
+            {{age}}<br>
+            {{flag}}<br>
+            {{arr}}<br>
+            {{objArr}}<br>
+            <!--数组遍历-->
+            <ul>
+                <li v-for="(k,v) in arr">{{k}}======{{v}}</li>
+            </ul>
+            <!--数组对象-->
+            <ul>
+                <li v-for="item in objArr">{{item}}</li>
+            </ul>
+            <ul>
+                <li v-for="item in objArr">{{item.id}} << {{item.name}}</li>
+            </ul>
+            <!-- (a,b) 写法 第一个标示值, 第二个标示索引-->
+            <ul>
+                <li v-for="(k,v) in objArr">{{k}}++++++{{v}}</li>
+            </ul>
+            <ul>
+                <li v-for="(k,v) in objArr">{{k.name}}++++++{{v}}</li>
+            </ul>
+            <!--对象 for 键值 v=value  k=key -->
+            <ul>
+                <li v-for="(v,k) in obj">{{v}}======{{k}}</li>
+            </ul>
+
+            <h1>v-model 用于表单 (作为表单的value)</h1>
+            <!--双向数据绑定-->
+            <input v-model="msj">{{msj}}
+
+
+            <h1>v-on //事件的执行</h1>
+            <button v-on:click="action">点击</button>
+            <button v-on:mouseover="action1">鼠标移动到此处</button>
+            <button v-on:mouseover="action2" v-on:mouseout="action3">鼠标此处一进一出</button>
+            <button v-on:dblclick="action4">鼠标双击此处</button>
+            <!--简写方式-->
+            <button @dblclick="action4">鼠标双击此处(简写)</button>
+            <h3>看这里的变化{{show}}</h3>
+
+
+            <h1>v-show/v-if  显示与隐藏  判断 </h1>
+            <button v-show="flag">show</button> 布尔值v-show建议少用<br>
+            <h4 v-if="age < 18">年龄大于18岁</h4>
+            <h4 v-else-if="age > 18">年龄小于18岁</h4>
+            <h4 v-else>年龄{{age}}</h4>
+
+
+            <h1>文本和标签  模板 v-html v-text </h1>
+            <div>{{msj}}</div>
+            <!--v-cloak  解决{{}}浏览器闪烁的问题 同时还需要对应的css样式-->
+            <div v-cloak>{{msj}}</div>
+            <div v-text="msj"></div> <!--类似原生的js   innerText 和innerHtml-->
+            <div v-html="html"></div>
+
+
+            <h1>事件修饰符 .stop .once .prevent</h1>
+            <h2>事件冒泡</h2>
+            <!-- 打开控制台查看效果-->
+            <div v-on:click="show1()">最外层
+                <div @click="show2()">中间层
+                    <!--vue中阻止冒泡的写法 -->
+                    <button @click.stop="show3()">最内层</button>
+                    <!--<button @click="show3()">最内层</button>-->
+                </div>
+            </div>
+            <!--阻止事件冒泡-->
+            <div v-on:click="show4()">最外层
+                <div @click="show5()">中间层
+                    <button @click="show6($event)">最内层</button>
+                </div>
+            </div>
+
+            <h2>取消事件的默认的动作</h2>
+            <a href="www.baidu.com" @click.prevent="open()">取消</a><!--vue中的写法-->
+            <a href="www.baidu.com" @click="open($event)">取消</a>
+            <h2>单次操作</h2>
+            <button @click.once="once()">once操作</button>
+
+
+
+            <h1>键盘事件    vue的语义化操作</h1>
+            <input @keydown="key1()">sss
+            <input @keydown.enter="key2()">sss
+            <input @keydown.left="key3()">sss
+            <input @keydown.p="key4()">sss
+
+
+            <h1>过滤器   处理数据的对应函数</h1>
+            过滤器用法 | 过滤器名称
+            <div>{{pai | number}}</div>
+            <!--可带参数-->
+            <div>{{pai | number(2)}}</div>
+
+            <div>{{age | addZero}}</div>
+            <div>{{11 | addZero}}</div>
+            <button @click="switchOpen">{{flag | translation(flag) }}</button>
+            <ul v-if="!flag">
+                <li v-for="item in  menu">{{item.type | menuType(item.type)}}</li>
+            </ul>
+            <!--对时间戳的转换-->
+            <div>{{currentTime | timeTr(currentTime)}}</div>
+            <!--时间戳转换地址-->
+            <!--tool.chinaz.com/Tools/unixtime.aspx-->
+        </div>
+        <script>
+
+
+            //外置过滤器调用;
+            Vue.filter('addZero',function (data) {
+                return data<10 ? data: data+10;
+            });
+
+
+            var app =new Vue({
+                el:'#app',
+                data:{
+                    message:'helloworld Vue!',
+                    name:"xuwx",
+                    age:17,
+                    flag:true,
+                    arr:['a','b','c'],
+                    obj:{id:1,name:'xuwx',age:18,man:true},
+                    objArr:[{id:1,name:"lucy"},{id:2,name:"mark"},{id:3,name:"xuwx"}],
+                    msj:'阿星',
+                    show:'看我72变!',
+                    html:'<span>html标签</span>',
+                    pai:3.1415926,
+                    menu:[{id:1,type:1},{id:2,type:2},{id:3,type:3},{id:4,type:4}],
+                    currentTime:Date.now()//当前的时间戳
+
+                },
+                methods:{
+                    action:function (){
+                       alert(666),
+                           //改变了data里的数据,其他的引用的地方都会改变. vue 特色 数据双向绑定
+                       this.show="单击888";
+                    },
+                    action1:function (){
+                       this.message="你好, vue";
+                    },
+                    action2:function (){
+                        this.show="变空";
+                    },
+                    action3:function (){
+                        this.show="变出来";
+                    },
+                    action4:function (){
+                        this.show="双击666";
+                    },
+                    //es6写法
+                    show1(){
+                        console.log("1111")
+                    },
+                    show2(){
+                        console.log("2222")
+                    },
+                    //es5写法
+                    show3:function () {
+                        console.log("3333")
+                    },show4(){
+                        console.log("4444")
+                    },show5(){
+                        console.log("5555")
+                    },show6(e){
+                        console.log("6666"),
+                        //阻止事件向上冒泡
+                        e.stopPropagation();
+                    },
+                    open(e){
+                        console.log('open');
+                        //取消事件的默认动作
+                        e.preventDefault();
+                    },
+                    once(){
+                        console.log("此方法只执行一次")
+                    },
+                    key1(){
+                        console.log("键盘事件触发")
+                    },
+                    key2(){
+                        console.log("enter键触发")
+                    },
+                    key3(){
+                        console.log("left按键触发")
+                    },
+                    key4(){
+                        console.log("p按键触触发")
+                    },
+                    switchOpen(){
+                        //点击后取反.
+                        this.flag=!this.flag;
+                    }
+                },
+                //内置过滤器写法  只有在 app 用
+                filters:{
+                    number:function (data,n) {
+                        //保留两位小数
+                       // return data.toFixed(2);
+                        return data.toFixed(n);
+                    },
+                    translation(flag){
+                        if(flag){
+                            return "显示";
+                        }else{
+                            return "隐藏";
+                        }
+                    },
+                    menuType(type){
+                      switch (type){
+                          case 1: return '动漫';break;
+                          case 2: return '电影';break;
+                          case 3: return '电视剧';break;
+                          default: return '其他';break;
+                      }
+                    },
+                    timeTr:(data) =>{
+                        var date1 = new Date(data);
+                        return date1.getFullYear()+'-'+(date1.getMonth()+1)+'-'+date1.getDate();
+                    }
+                    //如果存在一样名称的过滤器优先考虑内部的
+                    // addZero(){
+                    //
+                    // }
+                }
+            })
+        </script>
+    </div>
+    <div>
+        <div id="app1">
+            <!--绑定元素特性-->
+
+        </div>
+    </div>
+
+
+</body>
+</html>
