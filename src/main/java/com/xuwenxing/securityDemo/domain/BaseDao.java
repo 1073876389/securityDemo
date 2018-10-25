@@ -40,5 +40,9 @@ public class BaseDao implements Serializable {
      * 更新用户ID
      */
     private Long updateBy;
+    /**
+     * 逻辑删除标示  true or false
+     */
+    private Character delflag;
 
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuwenxing.securityDemo.dao.SystemMenuMapper">
+    <resultMap id="BaseResultMap" type="com.xuwenxing.securityDemo.domain.system.SystemMenu">
+        <id column="id" property="id"/>
+        <result column="parentId" property="parentId"/>
+        <result column="title" property="title"/>
+        <result column="info" property="info"/>
+        <result column="sort" property="sort"/>
+        <result column="icon" property="icon"/>
+        <result column="url" property="url"/>
+        <result column="createDate" property="createDate"/>
+        <result column="deleteDate" property="deleteDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="createBy" property="createBy"/>
+        <result column="deleteBy" property="deleteBy"/>
+        <result column="updateBy" property="updateBy"/>
+        <result column="delflag" property="delflag"/>
+    </resultMap>
+
+    <sql id="base_where">
+        <where>
+            <if test="title!=null">
+                and  title like concant('%',#{title}'%')
+            </if>
+            <if test="endDate!=null">
+                and  createDate &lt; #{endDate}
+            </if>
+            <if test="startDate!=null">
+                and  createDate &gt; #{startDate}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="save">
+      insert into	`systemMenu` ( id,parentId, title, info, sort, icon, url, createDate, deleteDate, updateDate, createBy, deleteBy, updateBy,delflag)
+      values (#{id},#{parentId}, #{title}, #{info}, #{sort}, #{icon}, #{url}, #{createDate}, #{deleteDate}, #{updateDate}, #{createBy}, #{deleteBy}, #{updateBy},#{delflag})
+    </insert>
+    <update id="update">
+        update `systemMenu`
+    set parentId = #{parentId},
+      title = #{title},
+      info = #{info},
+      sort = #{sort},
+      icon = #{icon},
+      url = #{url},
+      createDate = #{createDate},
+      deleteDate = #{deleteDate},
+      updateDate = #{updateDate},
+      createBy = #{createBy},
+      deleteBy = #{deleteBy},
+      updateBy = #{updateBy},
+      delflag = #{delflag},
+    where id = #{id}
+    </update>
+    <delete id="delete">
+        delete from	`systemMenu` where id = #{id}
+    </delete>
+    <select id="get" resultMap="BaseResultMap">
+      select id,parentId, title, info, sort, icon, url, createDate, deleteDate, updateDate, createBy, deleteBy, updateBy,delflag
+      from 	`systemMenu` where id =#{id}
+    </select>
+    <select id="findList" resultMap="BaseResultMap">
+        select id,parentId, title, info, sort, icon, url, createDate, deleteDate, updateDate, createBy, deleteBy, updateBy,delflag
+        from 	`systemMenu`
+    </select>
+
+    <select id="queryForList" resultMap="BaseResultMap">
+        select id,parentId, title, info, sort, icon, url, createDate, deleteDate, updateDate, createBy, deleteBy, updateBy,delflag
+        from 	`systemMenu`
+        <include refid="base_where"/>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="queryForCount" resultType="int">
+        SELECT count(id) FROM 	`systemMenu`
+        <include refid="base_where"/>
+    </select>
+
+</mapper>
