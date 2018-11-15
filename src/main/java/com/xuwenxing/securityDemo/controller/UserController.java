@@ -63,6 +63,18 @@ public class UserController
         return "uploadFiles";
     }
 
+    @RequestMapping("/myIndex")
+     public String myIndex(){
+        return "myIndex";
+    }
+
+    @RequestMapping("/oneUser")
+    public String oneUser(Map<String,Object> map) {
+        List<User> list = userService.findList();
+        map.put("users",list);
+        return "showOneUser";
+    }
+
 
     @RequestMapping("/userLogin")
     public String userLogin(Model model,String username, String password){

@@ -49,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //       http.csrf().disable();//csrf防御默认是开启的
+       http.headers().frameOptions().sameOrigin();
        http.authorizeRequests().antMatchers("/bootstrap/**").permitAll().anyRequest().authenticated()
                .and().formLogin().loginPage("/login").failureUrl("/login?error=true").permitAll().successHandler(loginSuccessHandler())
                .and().logout().permitAll().invalidateHttpSession(true).deleteCookies("JSESSIONID").logoutSuccessHandler(logoutSuccessHandler())
